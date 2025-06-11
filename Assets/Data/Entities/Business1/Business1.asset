@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfd4b3157d3e3324083d8af16c22b8df, type: 3}
+  m_Name: Business1
+  m_EditorClassIdentifier: 
+  DescriptionComponent:
+    Name: "\u0411\u0438\u0437\u043D\u0435\u0441 1"
+    Description: 
+  CostComponent:
+    CostBase: 3
+    Cost: 3
+  IncomeComponent:
+    BaseValue: 3
+    Level: 0
+    Value: 0
+  DelayComponent:
+    RemainningTime: 0
+    DelayTime: 3
+  Upgrades:
+  - {fileID: 11400000, guid: 02e61778678570a45a2f3aa6b1969b97, type: 2}
+  - {fileID: 11400000, guid: 429876221f5b7cc4795632f3233e5bad, type: 2}
