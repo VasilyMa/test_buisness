@@ -14,7 +14,10 @@ namespace Client
             if (state.TryAddEntity("player", playerEntity))
             {
                 ref var playerComp = ref world.GetPool<PlayerComponent>().Add(playerEntity);
-                playerComp.Value = 0;
+
+                var data = SaveModule.CurrentData;
+
+                playerComp.AddValue(data.Value);
             }
         }
     }

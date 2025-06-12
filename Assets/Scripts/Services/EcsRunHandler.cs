@@ -23,6 +23,8 @@ public class EcsRunHandler
 
             .Add(new RunIncomeResolveSystem())
 
+            .Add(new RunSaveSystem())
+
             .Add(new RunDelEventSystem<ResolveIncomeEvent>())
             .Add(new RunDelEventSystem<ResolveLevelUpEvent>())
             .Add(new RunDelEventSystem<ResolveUpgradeEvent>())
@@ -43,9 +45,7 @@ public class EcsRunHandler
     {
         if (_systems != null)
         {
-            // list of custom worlds will be cleared
-            // during IEcsSystems.Destroy(). so, you
-            // need to save it here if you need.
+            SaveModule.SaveData();
             _systems.Destroy();
             _systems = null;
         }

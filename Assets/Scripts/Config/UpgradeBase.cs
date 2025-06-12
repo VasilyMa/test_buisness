@@ -8,8 +8,9 @@ using Leopotam.EcsLite;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewUpgrade", menuName = "Business/NewUpgrade")]
-public class UpgradeBase : ScriptableObject
+public class UpgradeBase : ScriptableObject, ISerializationCallbackReceiver
 {
+    public string KEY_ID;
     public DescriptionComponent DescriptionComponent;
     public UpgradeComponent UpgradeComponent;
     public CostComponent CostComponent;
@@ -30,6 +31,19 @@ public class UpgradeBase : ScriptableObject
         foreach (var component in components)
         {
             component.Init(world, entity);
+        }
+    }
+
+    public void OnAfterDeserialize()
+    {
+
+    }
+
+    public void OnBeforeSerialize()
+    {
+        if (this != null)
+        {
+            KEY_ID = name;
         }
     }
 }

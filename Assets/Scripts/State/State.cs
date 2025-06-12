@@ -25,6 +25,7 @@ public class State : MonoBehaviour
 
     private void Awake()
     {
+        SaveModule.Initialize();
         entities = new Dictionary<string, EcsPackedEntity>();
         EcsRunHandler = new EcsRunHandler();
     }

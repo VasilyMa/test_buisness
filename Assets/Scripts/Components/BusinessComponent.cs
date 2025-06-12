@@ -5,8 +5,10 @@ using UnityEngine;
 
 namespace Client 
 {
+
     public struct BusinessComponent : IComponent
     {
+        [HideInInspector] public string KEY_ID;
         public List<int> Upgrades;
 
         public void Init(EcsWorld world, int entity)
@@ -19,6 +21,7 @@ namespace Client
     public struct IncomeComponent : IComponent 
     {
         public int BaseValue;
+        public int BaseLevel;
         [HideInInspector] public int Level;
         [HideInInspector] public int Value;
         private List<float> _modifiers;
@@ -29,7 +32,7 @@ namespace Client
             ref var incomeComp = ref world.GetPool<IncomeComponent>().Add(entity);
             incomeComp.BaseValue = BaseValue;
             incomeComp.Value = BaseValue;
-            incomeComp.Level = 1;
+            incomeComp.Level = BaseLevel;
             incomeComp._modifiers = new List<float>();
 
         }
@@ -47,7 +50,7 @@ namespace Client
             return Value;
         }
 
-        void Recalculate()
+        public void Recalculate()
         {
             float totalModifiers = 1f;
 

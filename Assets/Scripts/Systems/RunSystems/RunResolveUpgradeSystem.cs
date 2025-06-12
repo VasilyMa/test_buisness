@@ -1,7 +1,5 @@
 using Leopotam.EcsLite;
 
-using UnityEngine;
-
 namespace Client 
 {
     sealed class RunResolveUpgradeSystem : IEcsInitSystem, IEcsRunSystem 
@@ -28,6 +26,19 @@ namespace Client
                 ref var upgradeComp = ref upgradePool.Get(entity);
 
                 incomeComp.AddModifier(upgradeComp.Value);
+
+                string key = upgradeComp.KEY_ID;
+
+                var upgradeData = SaveModule.CurrentData.Upgrades.Find(x => x.KEY_ID == key);
+
+                if (upgradeData != null)
+                {
+                    upgradeData.IsBuyed = true;
+                }
+                else
+                {
+                    SaveModule.CurrentData.Upgrades.Add(new UpgradeData(key, true));
+                }
 
                 ObserverEntity.BusinessChange(entity);
             }

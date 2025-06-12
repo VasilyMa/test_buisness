@@ -24,6 +24,7 @@ public class BusinessSlotView : MonoBehaviour
         world = State.Instance.EcsRunHandler.World;
         businessEntity = entity;
 
+        progressFill.fillAmount = 0;
         btnLevelUp.onClick.AddListener(InvokLevelUp);
 
         if (State.Instance.TryGetEntity("player", out int playerEntity))
@@ -75,14 +76,29 @@ public class BusinessSlotView : MonoBehaviour
             if (world.GetPool<IncomeComponent>().Has(entity))
             {
                 ref var incomeComp = ref world.GetPool<IncomeComponent>().Get(entity);
-                titleBusinessInfo.text = $"LVL\b{incomeComp.Level}";
-                titleIncomeInfo.text = $"Доход\b${incomeComp.Value}";
+                titleBusinessInfo.text = $"LVL\n{incomeComp.Level}";
+                titleIncomeInfo.text = $"Доход\n${incomeComp.Value}";
 
                 if (world.GetPool<CostComponent>().Has(entity))
                 {
                     ref var costComp = ref world.GetPool<CostComponent>().Get(entity);
-                    titleCostLevelUpInfo.text = $"Цена: \b${costComp.CostBase * (1 + incomeComp.Level)}";
-                }
+                    titleCostLevelUpInfo.text = $"Цена: \n${costComp.Cost}";
+
+
+                    if (State.Instance.TryGetEntity("player", out int entityPlayer))
+                    {
+                        ref var playerComp = ref world.GetPool<PlayerComponent>().Get(entityPlayer);
+
+                        if (playerComp.Value >= costComp.Cost)
+                        {
+                            btnLevelUp.interactable = true;
+                        }
+                        else
+                        {
+                            btnLevelUp.interactable = false;
+                        }
+                    }
+                }   
             }
         }
     }
@@ -106,7 +122,21 @@ public class BusinessSlotView : MonoBehaviour
 
     void InvokLevelUp()
     {
-        world.GetPool<ResolveLevelUpEvent>().Add(businessEntity);
+        if (State.Instance.TryGetEntity("player", out int entityPlayer))
+        {
+            ref var playerComp = ref world.GetPool<PlayerComponent>().Get(entityPlayer);
+
+            if (world.GetPool<CostComponent>().Has(businessEntity))
+            {
+                ref var costComp = ref world.GetPool<CostComponent>().Get(businessEntity);
+
+                if (playerComp.Value >= costComp.Cost)
+                {
+                    world.GetPool<ResolveLevelUpEvent>().Add(businessEntity);
+                    playerComp.SubValue(costComp.Cost);
+                }
+            }
+        }
     }
 
     private void OnDestroy()

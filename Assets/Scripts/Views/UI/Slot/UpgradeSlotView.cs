@@ -29,12 +29,21 @@ public class UpgradeSlotView : MonoBehaviour
         if (world.GetPool<CostComponent>().Has(entity))
         {
             ref var costComp = ref world.GetPool<CostComponent>().Get(entity);
-            titleCost.text = $"Цена: \b${costComp.CostBase}";
+            ref var upgradeComp = ref world.GetPool<UpgradeComponent>().Get(entity);    
+            
+            if (upgradeComp.IsBuyed)
+            {
+                buyed = true;
+                btnUpgrade.interactable = false;
+                titleCost.text = "Куплено";
+            }
+            else
+            {
+                titleCost.text = $"Цена: \n${costComp.CostBase}";
+                ObserverEntity.OnValueChange += onValueChange;
+                btnUpgrade.onClick.AddListener(InvokeUpgrade);
+            }
         }
-
-        ObserverEntity.OnValueChange += onValueChange;
-
-        btnUpgrade.onClick.AddListener(InvokeUpgrade);
     }
 
     void onValueChange(int value)
@@ -59,16 +68,32 @@ public class UpgradeSlotView : MonoBehaviour
 
     void InvokeUpgrade()
     {
-        ref var upgradComp = ref world.GetPool<UpgradeComponent>().Get(upgradeEntity);
+        if (State.Instance.TryGetEntity("player", out int entityPlayer))
+        {
+            ref var playerComp = ref world.GetPool<PlayerComponent>().Get(entityPlayer);
 
-        world.GetPool<ResolveUpgradeEvent>().Add(upgradComp.BusinessEntity).Value = upgradComp.UpgradeBonusValue;
+            if (world.GetPool<CostComponent>().Has(upgradeEntity))
+            {
+                ref var upgradeComp = ref world.GetPool<UpgradeComponent>().Get(upgradeEntity);
+                ref var costComp = ref world.GetPool<CostComponent>().Get(upgradeEntity);
 
-        btnUpgrade.interactable = false;
-        titleCost.text = "Куплено";
+                if (playerComp.Value >= costComp.Cost)
+                {
+                    playerComp.SubValue(costComp.Cost);
 
-        buyed = true;
+                    ref var upgradeEventComp = ref world.GetPool<ResolveUpgradeEvent>().Add(upgradeComp.BusinessEntity);
+                    upgradeEventComp.Value = upgradeComp.UpgradeBonusValue;
+                    upgradeEventComp.KEY_ID = upgradeComp.KEY_ID;
 
-        ObserverEntity.OnValueChange -= onValueChange;
+                    btnUpgrade.interactable = false;
+                    titleCost.text = "Куплено";
+
+                    buyed = true;
+
+                    ObserverEntity.OnValueChange -= onValueChange;
+                }
+            }
+        }
     }
 
     private void OnDestroy()

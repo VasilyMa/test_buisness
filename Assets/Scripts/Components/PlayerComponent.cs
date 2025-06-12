@@ -17,7 +17,7 @@ namespace Client
         {
             Value -= value;
 
-            Value = Mathf.Min(Value, 0);
+            Value = Mathf.Clamp(Value, 0, int.MaxValue);
 
             ObserverEntity.ValueChange(Value);
         }

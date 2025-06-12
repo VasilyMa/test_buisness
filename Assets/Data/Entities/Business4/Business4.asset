@@ -10,23 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfd4b3157d3e3324083d8af16c22b8df, type: 3}
-  m_Name: Business1
+  m_Name: Business4
   m_EditorClassIdentifier: 
-  KEY_ID: Business1
   DescriptionComponent:
-    Name: "\u0411\u0438\u0437\u043D\u0435\u0441 1"
+    Name: "\u0411\u0438\u0437\u043D\u0435\u0441 4"
     Description: 
   CostComponent:
-    CostBase: 3
+    CostBase: 1000
     Cost: 3
   IncomeComponent:
-    BaseValue: 3
-    BaseLevel: 1
+    BaseValue: 1000
     Level: 0
     Value: 0
   DelayComponent:
     RemainningTime: 0
-    DelayTime: 3
+    DelayTime: 17
   Upgrades:
-  - {fileID: 11400000, guid: 02e61778678570a45a2f3aa6b1969b97, type: 2}
-  - {fileID: 11400000, guid: 429876221f5b7cc4795632f3233e5bad, type: 2}
+  - {fileID: 11400000, guid: 615aa319765c4604aba0b622f8cadafe, type: 2}
+  - {fileID: 11400000, guid: 1440c5d93d13aea4fa3860b0cb6b9793, type: 2}

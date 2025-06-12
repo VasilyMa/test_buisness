@@ -29,6 +29,10 @@ namespace Client
                 {
                     ref var playerComp = ref world.GetPool<PlayerComponent>().Get(playerEntity);
                     playerComp.AddValue(value);
+
+                    SaveModule.CurrentData.Value = playerComp.Value;
+
+                    world.GetPool<ResolveSaveEvent>().Add(world.NewEntity());
                 }
             }
         }
